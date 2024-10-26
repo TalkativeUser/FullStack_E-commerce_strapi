@@ -5,24 +5,34 @@ import Home from './pages'
 import About from './pages/About'
 import Products from './pages/Products'
 import ProductDetails from './components/ProductDetails'
-import Navbar from './Layout/Navbar'
 import Login from './Authentication/Login'
+import AppLayOut from './Layout/AppLayOut'
+import cookieService from './services/cookieService'
+import CartDrawer from './components/CartDrawer'
 
 function App() {
+
+  const isAuth =cookieService.get('jwt')
 
   return (
     <>
 
-<Navbar />
 
       <Routes>
-           <Route index element={<Home/>}  /> 
-           <Route path='/about' element={<About/>}  /> 
-           <Route path='/products' element={<Products/>}  /> 
-           <Route path='/products/:id'  element={ <ProductDetails /> } />
-           <Route path='/login'  element={ <Login /> } />
+
+        <Route path='/' element={<AppLayOut />} >
+
+            <Route index element={<Home/>}  /> 
+            <Route path='/about' element={<About/>}  /> 
+            <Route path='/products' element={<Products/>}  /> 
+            <Route path='/products/:id'  element={ <ProductDetails /> } />
+
+        </Route>
+            <Route path='/login'  element={ <Login isAuth={isAuth} /> } />
+         
       </Routes>
     
+    <CartDrawer />
     </>
   )
 }

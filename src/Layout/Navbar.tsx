@@ -10,7 +10,7 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  useDisclosure,
+  // useDisclosure,
   useColorModeValue,
   Stack,
   useColorMode,
@@ -19,6 +19,10 @@ import {
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+import cookieService from '../services/cookieService'
+import {  useDispatch, useSelector } from 'react-redux'
+import { cartSelector } from '../app/store'
+import { onOpenCartDrawerAction } from '../app/features/globalSlice'
 
 interface Props {
   children: React.ReactNode
@@ -49,8 +53,21 @@ const NavLink = (props: Props) => {
 }
 
 export default function Navbar() {
-  const { colorMode, toggleColorMode } = useColorMode()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { colorMode, toggleColorMode } = useColorMode()  //  السطر ده مهم جدا جدا جدا عشان من خلاله بنظبط الدارك مود  ✅
+  // const { isOpen, onOpen, onClose } = useDisclosure()
+  const isAuth =cookieService.get('jwt')
+  const cartProducts=useSelector(cartSelector)
+  function logOutMethod(){
+
+    cookieService.remove('jwt')
+    window.location.reload()
+  }
+
+  const dispatch=useDispatch()
+  const onOpenDrawer=()=>  dispatch( onOpenCartDrawerAction())
+
+
+
   return (
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -74,10 +91,14 @@ export default function Navbar() {
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button>
 
-              <Box as={RouterLink} m={"auto"} to={'/login'}> Login </Box>
+              <Button onClick={onOpenDrawer} >
+
+                Cart ( {cartProducts.length} )
+              </Button>
 
 
-              <Menu>
+
+          { isAuth?<Menu>
                 <MenuButton
                   as={Button}
                   rounded={'full'}
@@ -105,9 +126,11 @@ export default function Navbar() {
                   <MenuDivider />
                   <MenuItem>Your Servers</MenuItem>
                   <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={logOutMethod} >Logout</MenuItem>
                 </MenuList>
-              </Menu>
+              </Menu> :              <Box as={RouterLink} m={"auto"} to={'/login'}> Login </Box>
+ }
+             
 
 
 
@@ -118,3 +141,4 @@ export default function Navbar() {
     </>
   )
 }
+

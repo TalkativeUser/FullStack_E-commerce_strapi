@@ -61,23 +61,27 @@ export interface ThumbnailFormat {
         attributes: CategoryAttributes;
     };
 }
+//  this inerface for product attributes , sub property from product
 // Done ✅
  export interface ProductAttributes {
     title: string;
     description: string;
     price: number;
-    stock: number;
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
+    //  These properties are optional because it have returned from product details request 
+    stock?: number;
+    createdAt?: string;
+    updatedAt?: string;
+    publishedAt?: string;
     thumbnail: Thumbnail;
     category: Category;
 }
 
+// this interface for the product aleready 
 // Done ✅
  export interface ProductData {
     id: number;
     attributes: ProductAttributes;
+    cartQuantity?:number;
 }
 
 // Done ✅
@@ -100,9 +104,14 @@ export interface ThumbnailFormat {
     meta: Meta;
 }
 
+
+
+
+
+
 // this interface for the data returned from login request 
 
-export interface loginInterface {
+export interface loginResponse {
 
     jwt:string,
     user:{
@@ -110,5 +119,15 @@ export interface loginInterface {
         username:string,
         email:string,
 
+    }
+}
+
+
+
+export interface IAxiosErrorMsg{
+
+    error:{
+
+        message?:string
     }
 }
