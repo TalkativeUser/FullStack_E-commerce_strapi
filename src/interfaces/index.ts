@@ -17,31 +17,31 @@ export interface ThumbnailFormat {
 
 // Done ✅
  export interface ThumbnailAttributes {
-    name: string;
-    alternativeText: string | null;
-    caption: string | null;
-    width: number;
-    height: number;
-    formats: {
+    name?: string;
+    alternativeText?: string | null;
+    caption?: string | null;
+    width?: number;
+    height?: number;
+    formats?: {
         thumbnail: ThumbnailFormat;
     };
-    hash: string;
-    ext: string;
-    mime: string;
-    size: number;
+    hash?: string;
+    ext?: string;
+    mime?: string;
+    size?: number;
     url: string;
-    previewUrl: string | null;
-    provider: string;
-    provider_metadata: string | null;
-    createdAt: string;
-    updatedAt: string;
+    previewUrl?: string | null;
+    provider?: string;
+    provider_metadata?: string | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 
 // Done ✅
  export interface Thumbnail {
     data: {
-        id: number;
+        id?: number;
         attributes: ThumbnailAttributes;
     };
 }
@@ -64,16 +64,17 @@ export interface ThumbnailFormat {
 //  this inerface for product attributes , sub property from product
 // Done ✅
  export interface ProductAttributes {
+    
     title: string;
     description: string;
     price: number;
     //  These properties are optional because it have returned from product details request 
-    stock?: number;
+    stock: number;
     createdAt?: string;
     updatedAt?: string;
     publishedAt?: string;
     thumbnail: Thumbnail;
-    category: Category;
+    category?: Category;
 }
 
 // this interface for the product aleready 
@@ -81,7 +82,7 @@ export interface ThumbnailFormat {
  export interface ProductData {
     id: number;
     attributes: ProductAttributes;
-    cartQuantity?:number;
+    quantity?:number;
 }
 
 // Done ✅

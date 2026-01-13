@@ -14,7 +14,7 @@ interface UserLoginInterFace {
 
 // 1. Define the async thunk for user login
 export const userLogin = createAsyncThunk('login/userLogin', async (user:UserLoginInterFace, thunkApi) => {
-  const { rejectWithValue } = thunkApi
+  const { rejectWithValue} = thunkApi
 
   try {
     const { data } = await axiosInstance.post('/api/auth/local',user )

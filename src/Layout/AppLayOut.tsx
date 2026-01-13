@@ -6,8 +6,8 @@ export default function AppLayOut() {
   return (
     <div>
 
-<Navbar />
-<Outlet />
+      <Navbar />
+      <Outlet />
       
     </div>
   )

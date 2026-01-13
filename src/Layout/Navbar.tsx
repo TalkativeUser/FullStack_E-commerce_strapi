@@ -56,7 +56,7 @@ export default function Navbar() {
   const { colorMode, toggleColorMode } = useColorMode()  //  السطر ده مهم جدا جدا جدا عشان من خلاله بنظبط الدارك مود  ✅
   // const { isOpen, onOpen, onClose } = useDisclosure()
   const isAuth =cookieService.get('jwt')
-  const cartProducts=useSelector(cartSelector)
+  const {cartProducts}=useSelector(cartSelector)
   function logOutMethod(){
 
     cookieService.remove('jwt')

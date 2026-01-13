@@ -21,7 +21,8 @@ export const isAddToCart_or_increesQuantity = (cartProducts: ProductData[],produ
         });
 
         return cartProducts.map(item =>
-            item.id === productClickedAdded.id&& item.cartQuantity ? { ...item, quantity: item.cartQuantity + 1 } : item
+            item.id === productClickedAdded.id&& item.quantity ? 
+              { ...item, quantity: item.quantity + 1 } : item
         );
     }
 
@@ -31,7 +32,7 @@ export const isAddToCart_or_increesQuantity = (cartProducts: ProductData[],produ
         duration: 2000,
         isClosable: true,
     });
-    return [...cartProducts, { ...productClickedAdded, cartQuantity: 1 }];
+    return [...cartProducts, { ...productClickedAdded, quantity: 1 }];
 };
 
 
@@ -44,7 +45,7 @@ export const isAddToCart_or_increesQuantity = (cartProducts: ProductData[],produ
 
 //     //  this case for if the cart prodcuts is empty and this first time added product to shopping cart
 //     if(cartProducts.length==0) {
-//         return cartProducts=[{...productClickedAdded,cartQuantity:1}]
+//         return cartProducts=[{...productClickedAdded,quantity:1}]
       
 //     }
 
@@ -57,9 +58,9 @@ export const isAddToCart_or_increesQuantity = (cartProducts: ProductData[],produ
 //         if(item.id === productClickedAdded.id) isFounded=true;
 
 
-//         return  item.id === productClickedAdded.id && item.cartQuantity  ?
+//         return  item.id === productClickedAdded.id && item.quantity  ?
         
-//         { ...item, cartQuantity: item.cartQuantity + 1 } 
+//         { ...item, quantity: item.quantity + 1 } 
          
 //          :
 //         //   السطر اللى تحتى ده شغال فى حالة ان ده عنصر مش موجوود بالفعل فى الارى 
@@ -71,7 +72,7 @@ export const isAddToCart_or_increesQuantity = (cartProducts: ProductData[],produ
 
 //     if(isFounded==false){
 
-//         return [...cartProducts,{...productClickedAdded,cartQuantity:1}]
+//         return [...cartProducts,{...productClickedAdded,quantity:1}]
 //     }
 
 //     return cartProducts;

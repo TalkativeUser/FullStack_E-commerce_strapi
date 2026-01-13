@@ -1,15 +1,27 @@
-import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Input } from '@chakra-ui/react';
+import { Button, Text, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay } from '@chakra-ui/react';
 import { useRef } from 'react';
-import { FocusableElement } from '@chakra-ui/utils';  // إضافة النوع الصحيح
+import { FocusableElement } from '@chakra-ui/utils';  
 import { useDispatch, useSelector } from 'react-redux';
 import { onCloseCartDrawerAction, selectGlobal } from '../app/features/globalSlice';
+import {  cartActions} from '../app/features/cartSlice';
+import CartDrawerItem from './CartDrawerItem';
+import { cartSelector } from '../app/store';
 
 
  const CartDrawer = () => {
+const {removeAllitems}=cartActions
 
-    const onCloseDrawer=()=>  dispatch( onCloseCartDrawerAction())
+    const onCloseDrawer=()=> dispatch(onCloseCartDrawerAction())
+
+    const removeCartProducts=()=>{
+
+      
+        dispatch(removeAllitems() )
+        onCloseDrawer()
+    }
 
     const {isOpenCartDrawer_state}=useSelector(selectGlobal)
+    const { cartProducts }=useSelector(cartSelector)
     const dispatch=useDispatch()
     const btnRef = useRef<FocusableElement>(null);
     
@@ -21,11 +33,14 @@ import { onCloseCartDrawerAction, selectGlobal } from '../app/features/globalSli
           <DrawerHeader>Your shopping Cart</DrawerHeader>
   
           <DrawerBody>
-            <Input placeholder="Type here ..." />
+
+            {cartProducts.length? cartProducts.map( (item)=><CartDrawerItem key={item.id} id={item.id} attributes={item.attributes}
+              quantity={item.quantity} /> ) :<Text> Your cart is empety </Text>  }
+            
           </DrawerBody>
   
           <DrawerFooter>
-            <Button variant="outline" colorScheme='red' mr={3} onClick={onCloseDrawer}>
+            <Button variant="outline" colorScheme='red' mr={3} onClick={removeCartProducts}>
              Clear All
             </Button>
             <Button colorScheme="blue">Save</Button>

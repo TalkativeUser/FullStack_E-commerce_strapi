@@ -11,12 +11,14 @@ export default function Products() {
 
   const getProductList=async ()=>{
      const data= await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/products`,{  params:{ populate:"thumbnail,category" }} )
+    //  console.log('products from strapi => ', data.data);
+     
     return data.data
 }
 
 const  {isLoading,data,isError} = useQuery({ queryKey: ['products'], queryFn: getProductList })
 
-if(isError) console.log( 'error from react query' )
+if(isError) console.log( 'fetch products error , react query' )
 
 
 

@@ -1,22 +1,38 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { loginReducer } from './features/loginSlice'
 import { cartReducer } from './features/cartSlice'
 import { globalReducer } from './features/globalSlice'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+import { apiSlice } from './services/productsApis'
 
-// ...
 
-export const store = configureStore({
-  reducer: {
-    loginSlice:loginReducer,
-    cartSlice:cartReducer,
-    globalSlice:globalReducer
-
-  
-  },
+const rootReducer = combineReducers({
+  loginSlice: loginReducer,
+  cartSlice: cartReducer,
+  globalSlice: globalReducer,
+  [apiSlice.reducerPath]:apiSlice.reducer
 })
 
+const persistConfig = {
+  key: 'root',
+  storage,
+}
 
-export const cartSelector =(store:RootState )=> store.cartSlice.cartProducts
+const persistedReducer = persistReducer(persistConfig, rootReducer)
+
+
+export const store = configureStore({
+  reducer: persistedReducer,
+   middleware: getDefaultMiddleware => getDefaultMiddleware( {serializableCheck:false} ).concat(apiSlice.middleware),
+
+})
+
+export const persistor = persistStore(store)
+
+
+// export const cartSelector =(store:RootState )=> store.cartSlice.cartProducts
+export const cartSelector = (store: RootState) => store.cartSlice
 
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
