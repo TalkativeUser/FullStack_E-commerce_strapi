@@ -17,7 +17,7 @@ import {
   HStack,
   createStandaloneToast,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import {useRef, useState } from "react";
 import { ProductData } from "../../interfaces";
 import { useUpdateProductMutation } from "../../app/services/productsApis";
 
@@ -32,7 +32,13 @@ export default function UpdateModalDash({
   const [updateProductData, setUpdateProductData] = useState(item);
   const [updateProduct, { isError, isLoading, error }] =
     useUpdateProductMutation();
+console.log(
+  '%cloading update product =>>>>>>>> ',
+  'color: green; font-weight: bold; font-size: 19px;',
+  error
+);    
   const { toast } = createStandaloneToast();
+const [thumbnail, setThumbnail] = useState<Blob | string>('')
 
   const handleChangeTextType = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -54,28 +60,45 @@ export default function UpdateModalDash({
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData=new FormData()
+    formData.append("data",JSON.stringify({
+      title:updateProductData.attributes.title,
+      price:updateProductData.attributes.price,
+      stock:updateProductData.attributes.stock,
+      description:updateProductData.attributes.description
 
-    const res = updateProduct({
+    }) )
+
+    formData.append('files.thumbnail',thumbnail)
+    updateProduct({
       id: updateProductData.id,
-      dtat: updateProductData.attributes,
+      data: formData,
     });
-    const result = res.then((data) => {
+     onClose();
+
+  };
+  // const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  //   const res = updateProduct({
+  //     id: updateProductData.id,
+  //     dtat: updateProductData.attributes,
+  //   });
+  //   const result = res.then((data) => {
 
         
-      if (data.error) {
-        toast({
-                      // response pattern is not stable 
-
-          title: ` ${data.error.data.error.name} : ${data.error.data.error.message} ❌`,
-          status: "error",
-          duration: 3000,
-          position: "top",
-        });
-      } else {
-        onClose();
-      }
-    });
-  };
+  //     if (data.error) {
+  //       toast({
+  //         title: ` ${data.error.data.error.name} : ${data.error.data.error.message} ❌`,
+  //         status: "error",
+  //         duration: 3000,
+  //         position: "top",
+  //       });
+  //     } else {
+  //       onClose();
+  //     }
+  //   });
+  // };
 
   return (
     <ModalContent>
@@ -137,13 +160,22 @@ export default function UpdateModalDash({
 
           <FormControl mt={4}>
             <FormLabel>Thumbnail </FormLabel>
-            <Input
+          <Input
               id="thumbnail"
               type="file"
-              h={"full"}
-              p={"2"}
-              accept="image/png, image/gif, image/jpeg  "
+              h="full"
+              p="2"
+              accept="image/png, image/gif, image/jpeg"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const file = e.target.files?.[0];
+                console.log('file => ' , file);
+                
+                if (file) {
+                  setThumbnail(file);
+                }
+              }}
             />
+
           </FormControl>
 
           <FormControl mt={4}>

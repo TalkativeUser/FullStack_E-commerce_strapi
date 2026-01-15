@@ -13,10 +13,10 @@ export const apiSlice = createApi({
 
   endpoints: (builder) => ({
     getDashboardProducts: builder.query({
-      query: (arg) => {
-        const { page } = arg;
+      query: () => {
+       
         return {
-          url: `/api/products?populate=category,thumbnail&pagination[page]=${page}&pagination[pageSize]=7`,
+          url: `/api/products?populate=category,thumbnail&pagination[pageSize]=7`,
         };
       },
       providesTags: (result) =>
@@ -46,21 +46,25 @@ export const apiSlice = createApi({
     }),
 
 
-    updateProduct: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `/api/products/${id}`,
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${cookieService.get("jwt")}`,
-        },
-        body: { data },
-      }),
+  updateProduct: builder.mutation({
+query: ({ id, data }) => {
+  console.log("Sending data to API:", { id, data }); 
+  return {
+    url: `/api/products/${id}`,
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${cookieService.get("jwt")}`,
+    },
+    body: data,  
+  };
+},
+  invalidatesTags: (result, error, { id }) => [
+      
+    { type: "Products", id: "LIST" } 
+  ],
+}),
 
-      invalidatesTags: (result, error, { id }) => [{ type: "Products", id }],
-    }),
-
-
-    createProduct: builder.mutation({
+  createProduct: builder.mutation({
       query: (data) => ({
         url: `/api/products`,
         method: "POST",
