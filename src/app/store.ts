@@ -5,9 +5,11 @@ import { globalReducer } from './features/globalSlice'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import { apiSlice } from './services/productsApis'
+import networkSlice from './features/networkSlice'
 
 
 const rootReducer = combineReducers({
+  network:networkSlice,
   loginSlice: loginReducer,
   cartSlice: cartReducer,
   globalSlice: globalReducer,

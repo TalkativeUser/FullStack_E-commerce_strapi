@@ -20,10 +20,13 @@ import MainAlertDialog from "./MainAlertDialog";
 import { useRef, useState } from "react";
 import DeleteModalDash from "./contentDaialogs/DeleteModalDash";
 import UpdateModalDash from "./contentDaialogs/UpdateModalDash";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
 
  
 
 export default function DashProductsTable() {
+  const {isOnline}=useSelector((store:RootState)=>store.network)
   const { isLoading, data } = useGetDashboardProductsQuery(
     { page: 1 },
     {
@@ -59,7 +62,7 @@ const [clickedProduct,setClickedProduct]=useState<ProductData>({ id:0, attribute
         onOpen();
   };
 
-  if (isLoading) return <ProductsTableSkeleton />;
+  if (isLoading || !isOnline) return <ProductsTableSkeleton />;
 
   return (
     <>

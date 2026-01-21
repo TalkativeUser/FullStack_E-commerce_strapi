@@ -60,7 +60,7 @@ query: ({ id, data }) => {
 },
   invalidatesTags: (result, error, { id }) => [
       
-    { type: "Products", id: "LIST" } 
+    { type: "Products", id} 
   ],
 }),
 
